@@ -32,7 +32,7 @@ import { type Layout, layoutFromTiled } from '../world/layout'
 import { npcHandle } from '../world/npc'
 import { setInUse, trim as trimTextures } from '../world/textures'
 import type { World } from '../world/World'
-import { events } from './events'
+import { events, startEvent } from './events'
 import { placedProps } from './props'
 import { forgetStructureLayout, placedLayouts } from './structures'
 
@@ -91,7 +91,7 @@ async function startIntro(def: AnyMap, ctx: MapContext<unknown>) {
   if (!intro) return
   if (def.introOnce && events.seen(intro as EventId)) return
   backgroundInstantly()
-  events.start(intro as EventId).catch((error: unknown) => console.error('[maps] intro', error))
+  startEvent(intro).catch((error: unknown) => console.error('[maps] intro', error))
   // Event scripts load a little later: wait until one is running, then let it draw.
   for (let i = 0; i < 100 && useSystemStore.getState().event === null; i++) {
     await wait(10)

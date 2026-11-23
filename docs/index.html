@@ -20,7 +20,7 @@
 
 <div class="note"><b>Status: early development.</b> The engine works and the demo shows what it can do, but APIs, content folders and save formats may still change between versions. Great for trying it out and for small projects, but expect some updates to your game when you upgrade.</div>
 
-<div class="tip"><b><a href="https://arclockproject.github.io/kroniki/demo/">Play the demo</a></b>: see what a game made with Kroniki Engine looks and feels like, right in your browser. No install needed.</div>
+<div class="tip"><b><a href="https://kroniki.arclockproject.org/demo/">Play the demo</a></b>: see what a game made with Kroniki Engine looks and feels like, right in your browser. No install needed.</div>
 
 <div class="cards">
   <a href="recipes.html"><b>Recipes</b><span>Step by step: a talking NPC, a new map, a shop, a quest, a battle area…</span></a>
@@ -32,6 +32,7 @@
 </div>
 
 <h2 id="first-steps">First steps after cloning</h2>
+<p><b>Start your own game</b> with <code>pnpm setup:project</code>. It asks which kind of game it is (a visual novel, or a game with maps), then removes the demo game from <code>src/content</code> and leaves a tiny starter: the player on an empty map (<code>maps/start</code>) and an empty <code>common</code> route for VN mode. The engine's own screens and scenes stay. Nothing is changed until you pick: Ctrl+C or an empty answer exits. If it finds a symbolic link where it deletes files, it stops before asking and changes nothing (the repository never has any, and deleting through one could reach files outside it): start again from a fresh clone. It runs once (undo with <code>git checkout -- src/content &amp;&amp; git clean -fd src/content</code>). Keep the demo instead if you want to learn from it first.</p>
 <p>The game's name, ids and version are in one file, <code>src/content/config/app.ts</code>. Everything else (browser tab, desktop window, save folder, storage keys, save and backup formats, installers, the Android app) is filled in from it, so nothing outside <code>src/content</code> needs editing:</p>
 <pre><code>// src/content/config/app.ts
 export default {
@@ -70,6 +71,7 @@ pnpm icons              # Android launcher icons from src/content/assets/icon (b
 pnpm build              # everything: web, Linux, Windows, Android (installers in build/dist)
 pnpm build:web          # build/web (add --lite for the lite build)
 pnpm build:linux        # one target; also build:win, build:android (see Tools → Building)
+pnpm setup:project      # start your own game: pick VN or maps, remove the demo (asks first)
 pnpm setup:lfs          # optional: Git LFS just for this repo (if it isn't installed), then tools/git-lfs/git-lfs pull
 pnpm vn:extension       # editor extension for .vn files (build/vn-extension/*.vsix)
 pnpm guide              # refresh this guide's search and code colours</code></pre>

@@ -162,7 +162,7 @@ export function defineWindow<P = void>(config: WindowConfig<P>): WindowDefinitio
 
 declare const poseType: unique symbol
 declare const characterPartsType: unique symbol
-export type PosesOf<D> = D extends { readonly [poseType]: infer Pose } ? Pose : never
+export type PosesOf<D> = D extends { readonly [poseType]: infer Pose extends string } ? Pose : never
 /** Layer name -> option names of a character's layered portrait (never without one). */
 export type PartsOf<D> = D extends { readonly [characterPartsType]: infer P } ? P : never
 declare const spriteTagType: unique symbol

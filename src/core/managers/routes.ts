@@ -13,15 +13,7 @@ import type {
 import type { EventConfig } from '../defs/scenes'
 import { reportError } from '../errors'
 import { getGame } from '../gameRef'
-import {
-  type EndingId,
-  type EventId,
-  loadEvent,
-  loadedEntry,
-  loadFlow,
-  loadRoute,
-  registry,
-} from '../registry'
+import { type EndingId, loadEvent, loadedEntry, loadFlow, loadRoute, registry } from '../registry'
 
 type EventLeaves = NonNullable<EventConfig['leaves']>
 
@@ -51,7 +43,7 @@ import { playback } from '../scene/playback'
 import { type EventRecord, quietly } from '../scene/replay'
 import { applyStage, captureStage, type Stage } from '../scene/stage'
 import { type RouteRun, useGameStore } from '../stores/game'
-import { events } from './events'
+import { events, startEvent } from './events'
 import { flags } from './flags'
 import { minigames } from './minigames'
 
@@ -265,7 +257,7 @@ async function play(id: RouteId, opts: RouteStart): Promise<void> {
           await finished
         } else {
           const mark = dev ? stateMark() : null
-          const run = events.start(event as EventId)
+          const run = startEvent(event)
           markReady()
           await run
           if (mark && dev && alive()) dev.check(key, mark, event)
@@ -273,7 +265,7 @@ async function play(id: RouteId, opts: RouteStart): Promise<void> {
       } else {
         enter(key)
         const mark = dev ? stateMark() : null
-        const run = events.start(event as EventId)
+        const run = startEvent(event)
         markReady()
         await run
         if (mark && dev && alive()) dev.check(key, mark, event)

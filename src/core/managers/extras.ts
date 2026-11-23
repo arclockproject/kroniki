@@ -8,7 +8,7 @@ import scenes from '@/content/scenes'
 import { audio } from '../audio/manager'
 import { musicPlayer } from '../audio/musicPlayer'
 import { type LineVoice, recorded, voicesKey } from '../audio/voiceClips'
-import type { EventConfig, GalleryConfig, ReplayConfig } from '../define'
+import type { EndingConfig, EventConfig, GalleryConfig, MovieConfig, ReplayConfig } from '../define'
 import { cgImage, cgPicture, cgVariants, type Picture } from '../gallery'
 import { getGame } from '../gameRef'
 import { lang, t } from '../lang'
@@ -60,7 +60,7 @@ const endingUnlocks = unlockable<EndingId>({
   exists: (id) => endingRegistry[id] !== undefined,
   store: persistentFlags(unlockKey.ending),
   toast: (id) => ({
-    text: t('Ending reached: {title}', { title: t(endingRegistry[id].title) }),
+    text: t('Ending reached: {title}', { title: t((endingRegistry[id] as EndingConfig).title) }),
     kind: 'ending',
     params: { ending: id },
   }),
@@ -351,7 +351,8 @@ export const extras = {
    */
   movies(revealAll = false): MovieEntry[] {
     return registry.movies.map((id) => {
-      const def = movieRegistry[id]
+      // Typed as a movie even when the game has none (the id type is then `never`).
+      const def: MovieConfig = movieRegistry[id]
       return {
         id,
         title: def.title,
@@ -391,7 +392,7 @@ export const extras = {
    */
   endings(revealAll = false): EndingEntry[] {
     return registry.endings
-      .map((id, index) => ({ id, index, def: endingRegistry[id] }))
+      .map((id, index) => ({ id, index, def: endingRegistry[id] as EndingConfig }))
       .sort((a, b) => (a.def.order ?? a.index) - (b.def.order ?? b.index))
       .map(({ id, def }) => ({
         id,

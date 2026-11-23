@@ -1,0 +1,7 @@
+{
+  // What a build checks (pnpm typecheck:build, run by pnpm build): the game and the engine, without
+  // the engine's tests. A failing or outdated test must never stop a game from building.
+  // pnpm typecheck still checks everything (tsconfig.json), tests included.
+  "extends": "./tsconfig.json",
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+}

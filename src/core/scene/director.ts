@@ -10,6 +10,7 @@ import { getGame } from '../gameRef'
 import { lang, t } from '../lang'
 import { characterNames } from '../managers/characters'
 import { dialog } from '../managers/dialog'
+import type { MovieConfig } from '../movies'
 import type { LayeredPortrait } from '../portrait/define'
 import type { SpinePortrait } from '../portrait/spine'
 import {
@@ -556,7 +557,10 @@ export const sceneApi: SceneApi = {
   },
 
   cg(id, ...rest) {
-    const [variant, options] = rest as [string | undefined, BackgroundOptions | undefined]
+    const [variant, options] = rest as unknown as [
+      string | undefined,
+      BackgroundOptions | undefined,
+    ]
     const picture = id ? (gallery as Record<string, GalleryConfig>)[id] : undefined
     if (!id || !picture) {
       setBackground(null)
@@ -611,7 +615,10 @@ export const sceneApi: SceneApi = {
     // Loading a mid-scene save, going back a line, or skipping: the movie is not shown again.
     if (isFastForward() || isSkippingEffects()) return Promise.resolve()
     // A movie from src/content/movies: its own file and options; it unlocks in Extras → Movies.
-    const def = Object.hasOwn(movies, src) ? movies[src as MovieId] : undefined
+    // Cast, not annotated: with no movies at all the lookup is `never` and would narrow `def` away.
+    const def = (Object.hasOwn(movies, src) ? movies[src as MovieId] : undefined) as
+      | MovieConfig
+      | undefined
     if (def && unlocks) unlock(unlockKey.movie(src))
     const { title: _title, video, poster: _poster, ...own } = def ?? { title: '', video: src }
     const options = { ...own, ...played }

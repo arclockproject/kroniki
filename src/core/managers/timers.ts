@@ -8,7 +8,7 @@ import { type TimerState, useGameStore } from '../stores/game'
 import { type SystemState, useSystemStore } from '../stores/system'
 import type { TimerRunsDuring } from '../timers'
 import { peekWorld } from '../world/getWorld'
-import { events } from './events'
+import { startEvent } from './events'
 
 export interface TimerOptions {
   /** How long a countdown runs. Leave out for a stopwatch that counts up until stop(). */
@@ -119,10 +119,7 @@ export function advanceTimers(ms: number): void {
   for (const id of done) {
     settle(id, true)
     const event = (timers[id] as TimerState).event
-    if (event)
-      void events
-        .start(event as EventId)
-        .catch((error: unknown) => reportError(`timer "${id}"`, error))
+    if (event) void startEvent(event).catch((error: unknown) => reportError(`timer "${id}"`, error))
   }
 }
 

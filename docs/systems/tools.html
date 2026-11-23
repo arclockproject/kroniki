@@ -78,7 +78,9 @@ pnpm vitest run src/core/managers/party.test.ts   # one file</code></pre>
   <li><code>src/content/maps.test.ts</code>: every map is well formed (spawns, doors, props, sprites, schedules) and structures fit.</li>
   <li><code>src/core/**/*.test.ts</code>: the engine (battles, party, shops, saves and migrations, replays, input, tweens, grid…).</li>
   <li><code>vite/**</code>: codegen (registry, Tiled, Aseprite, .vn compiler and checker). <code>scripts/**</code>: <code>pnpm lang</code>, <code>pnpm story</code>, this guide.</li>
+  <li><code>*.demo.test.ts</code> / <code>*.demo.test.tsx</code>: tests that run on the demo game (its items, maps, recipes, translations, sounds). <code>pnpm setup:project</code> removes them together with the demo, so they never fail in your game. A test that needs demo content gets this name.</li>
 </ul>
+<p>A build never runs or typechecks tests: <code>pnpm build</code> checks types with <code>pnpm typecheck:build</code> (<code>tsconfig.build.json</code>, the game and the engine without <code>*.test.*</code> files), so an outdated test can't stop a release. <code>pnpm typecheck</code> still checks everything.</p>
 <p>Tips for writing tests:</p>
 <ul>
   <li>Component tests: put <code>// @vitest-environment happy-dom</code> on top and use <code>@testing-library/react</code>. Always <code>await act(async () =&gt; …)</code>: a plain <code>act</code> with Suspense hangs.</li>
@@ -110,6 +112,7 @@ pnpm test:built      # the same idea for the built web game (after pnpm build:we
 <h2 id="building">Building</h2>
 <pre><code class="language-sh">pnpm build                # all targets below
 pnpm build:web            # build/web (static files, host anywhere)
+                          # every build first runs pnpm typecheck:build (types, tests left out)
 pnpm build:linux          # Linux AppImage
 pnpm build:win            # Windows installer + portable .exe (needs wine on Linux)
 pnpm build:desktop        # Linux + Windows
@@ -117,7 +120,7 @@ pnpm build:android        # Android debug APK (needs JDK 21 + Android SDK)
 pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties
 pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite)
 pnpm vn:extension         # build/vn-extension/*.vsix</code></pre>
-<p>The web build uses relative paths, so <code>build/web</code> runs from any folder of any web server. <code>.github/workflows/pages.yml</code> publishes it to GitHub Pages when you run it by hand (GitHub -&gt; Actions -&gt; Pages -&gt; Run workflow; pushing never rebuilds the site): this guide (<code>docs/</code>) at the site's root and the game in <code>demo/</code> (<a href="https://arclockproject.github.io/kroniki/demo/">the live demo</a>). It needs Settings -&gt; Pages -&gt; Source set to "GitHub Actions". For your own game, keep it, change the folder, or delete the file.</p>
+<p>The web build uses relative paths, so <code>build/web</code> runs from any folder of any web server. <code>.github/workflows/pages.yml</code> publishes it to GitHub Pages when you run it by hand (GitHub -&gt; Actions -&gt; Pages -&gt; Run workflow; pushing never rebuilds the site): this guide (<code>docs/</code>) at the site's root and the game in <code>demo/</code> (<a href="https://kroniki.arclockproject.org/demo/">the live demo</a>). It needs Settings -&gt; Pages -&gt; Source set to "GitHub Actions". For your own game, keep it, change the folder, or delete the file.</p>
 <h3 id="electron">The desktop app</h3>
 <ul>
   <li>Loads the built game through its own <code>app://game/</code> address (so sound and files work like on the web).</li>

@@ -4,24 +4,24 @@ A game engine for **visual novels and story-driven RPGs**, built with React and 
 
 > **Status: early development.** The engine works and the demo shows what it can do, but APIs, content folders and save formats may still change between versions. Great for trying it out and for small projects, but expect some updates to your game when you upgrade.
 
-| [**Play the demo**](https://arclockproject.github.io/kroniki/demo/) | [**Read the guide**](https://arclockproject.github.io/kroniki/) |
+| [**Play the demo**](https://kroniki.arclockproject.org/demo/) | [**Read the guide**](https://kroniki.arclockproject.org/) |
 | --- | --- |
 | See what a game made with Kroniki Engine looks and feels like, right in your browser. No install needed. | Everything about making a game: first steps, step by step recipes and a page for every part of the engine. |
 
-New here? Start with the guide's **[First steps](https://arclockproject.github.io/kroniki/#setup)**, then follow a **[recipe](https://arclockproject.github.io/kroniki/recipes.html)** to add your first NPC, map or shop.
+New here? Start with the guide's **[First steps](https://kroniki.arclockproject.org/#setup)**, then follow a **[recipe](https://kroniki.arclockproject.org/recipes.html)** to add your first NPC, map or shop.
 
 ---
 
 ## The guide
 
-The **[Kroniki Engine guide](https://arclockproject.github.io/kroniki/)** is the place to learn the engine. Every page has examples you can copy. It also ships in [`docs/`](docs/index.html), so you can read it offline in any browser.
+The **[Kroniki Engine guide](https://kroniki.arclockproject.org/)** is the place to learn the engine. Every page has examples you can copy. It also ships in [`docs/`](docs/index.html), so you can read it offline in any browser.
 
-- **Start:** [first steps](https://arclockproject.github.io/kroniki/#setup), [recipes](https://arclockproject.github.io/kroniki/recipes.html) (a talking NPC, a new map, a shop, a quest, a battle area...)
-- **World:** [maps](https://arclockproject.github.io/kroniki/world/maps.html), [characters](https://arclockproject.github.io/kroniki/world/characters.html), [art](https://arclockproject.github.io/kroniki/world/art.html)
-- **Story:** [writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html), [`.vn` scripts](https://arclockproject.github.io/kroniki/story/vn.html), [routes and flowchart](https://arclockproject.github.io/kroniki/story/routes.html)
-- **Gameplay:** [items](https://arclockproject.github.io/kroniki/gameplay/items.html), [quests](https://arclockproject.github.io/kroniki/gameplay/progress.html), [battles](https://arclockproject.github.io/kroniki/gameplay/battles.html), [extras](https://arclockproject.github.io/kroniki/gameplay/extras.html)
-- **Interface:** [screens](https://arclockproject.github.io/kroniki/interface/screens.html), [input](https://arclockproject.github.io/kroniki/interface/input.html), [look](https://arclockproject.github.io/kroniki/interface/look.html), [translations](https://arclockproject.github.io/kroniki/interface/translations.html)
-- **Systems:** [audio](https://arclockproject.github.io/kroniki/systems/audio.html), [saves](https://arclockproject.github.io/kroniki/systems/saves.html), [variants](https://arclockproject.github.io/kroniki/systems/variants.html), [tools and building](https://arclockproject.github.io/kroniki/systems/tools.html)
+- **Start:** [first steps](https://kroniki.arclockproject.org/#setup), [recipes](https://kroniki.arclockproject.org/recipes.html) (a talking NPC, a new map, a shop, a quest, a battle area...)
+- **World:** [maps](https://kroniki.arclockproject.org/world/maps.html), [characters](https://kroniki.arclockproject.org/world/characters.html), [art](https://kroniki.arclockproject.org/world/art.html)
+- **Story:** [writing a scene](https://kroniki.arclockproject.org/story/events/scripts.html), [`.vn` scripts](https://kroniki.arclockproject.org/story/vn.html), [routes and flowchart](https://kroniki.arclockproject.org/story/routes.html)
+- **Gameplay:** [items](https://kroniki.arclockproject.org/gameplay/items.html), [quests](https://kroniki.arclockproject.org/gameplay/progress.html), [battles](https://kroniki.arclockproject.org/gameplay/battles.html), [extras](https://kroniki.arclockproject.org/gameplay/extras.html)
+- **Interface:** [screens](https://kroniki.arclockproject.org/interface/screens.html), [input](https://kroniki.arclockproject.org/interface/input.html), [look](https://kroniki.arclockproject.org/interface/look.html), [translations](https://kroniki.arclockproject.org/interface/translations.html)
+- **Systems:** [audio](https://kroniki.arclockproject.org/systems/audio.html), [saves](https://kroniki.arclockproject.org/systems/saves.html), [variants](https://kroniki.arclockproject.org/systems/variants.html), [tools and building](https://kroniki.arclockproject.org/systems/tools.html)
 
 ## What it does
 
@@ -46,7 +46,7 @@ The **[Kroniki Engine guide](https://arclockproject.github.io/kroniki/)** is the
 - Translations, content variants (one project, several builds), an audio manager with preloading, and encrypted media in builds.
 - Works fully offline. Every script, font and picture ships with the game.
 
-Want to see it in action first? **[Play the demo](https://arclockproject.github.io/kroniki/demo/)**.
+Want to see it in action first? **[Play the demo](https://kroniki.arclockproject.org/demo/)**.
 
 ## How you make a game
 
@@ -94,9 +94,9 @@ If you do use `.vn`, the **Kroniki VN Scripts** editor extension for VSCodium / 
 - **Checks as you type:** unknown ids (with "did you mean"), lines it doesn't understand and bad indentation.
 - **Show generated TypeScript:** see exactly what a scene compiles to.
 
-Build it with `pnpm vn:extension`, then install `build/vn-extension/*.vsix` with "Install from VSIX..." in the editor's Extensions view. More in the guide: [Dialogue scripts (.vn)](https://arclockproject.github.io/kroniki/story/vn.html#extension).
+Build it with `pnpm vn:extension`, then install `build/vn-extension/*.vsix` with "Install from VSIX..." in the editor's Extensions view. More in the guide: [Dialogue scripts (.vn)](https://kroniki.arclockproject.org/story/vn.html#extension).
 
-**Next:** the guide's [Writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html) walks you through your first scene.
+**Next:** the guide's [Writing a scene](https://kroniki.arclockproject.org/story/events/scripts.html) walks you through your first scene.
 
 ## Quick start
 
@@ -116,7 +116,9 @@ pnpm setup:lfs
 tools/git-lfs/git-lfs pull
 ```
 
-Then give the game its name and ids in `src/content/config/app.ts`, and carry on with the guide's **[First steps](https://arclockproject.github.io/kroniki/#setup)**: it explains each field and what to do next.
+To start your own game, run `pnpm setup:project`. It asks whether you're making a visual novel or a game with maps, then removes the demo game and leaves a tiny starter (the player on an empty map, and an empty route for VN mode). Nothing changes until you pick, and Ctrl+C or an empty answer exits.
+
+Then give the game its name and ids in `src/content/config/app.ts`, and carry on with the guide's **[First steps](https://kroniki.arclockproject.org/#setup)**: it explains each field and what to do next.
 
 ## Commands
 
@@ -124,6 +126,7 @@ Then give the game its name and ids in `src/content/config/app.ts`, and carry on
 | --- | --- |
 | `pnpm dev:browser` | Dev server in the browser |
 | `pnpm dev:electron` | The desktop app in dev mode |
+| `pnpm setup:project` | Start your own game: pick visual novel or maps, remove the demo (asks first) |
 | `pnpm build` | Every target: web, Linux, Windows and Android (installers in `build/dist`) |
 | `pnpm build:web` | Web build only (also `build:linux`, `build:win`, `build:android`) |
 | `pnpm test` | Unit tests (Vitest) |

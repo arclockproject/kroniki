@@ -142,7 +142,7 @@ window.DOCS_INDEX = [
   "page": "index.html",
   "id": "first-steps",
   "title": "First steps after cloning",
-  "text": "The game's name, ids and version are in one file, src/content/config/app.ts. Everything else (browser tab, desktop window, save folder, storage keys, save and backup formats, installers, the Android app) is filled in from it, so nothing outside src/content needs editing: // src/content/config/app.ts export default { id: 'mygame', // save folder, storage keys, build files appId: 'com.mystudio.mygame', // store id (Android, installers) name: 'My Game', // what players see description: 'A small adventure', version: '1.0.0', // title screen, saves build: 1, // goes up with every release (Android needs it) saveFormat: 'mygame-save', // only saves with this format load backupFormat: 'mygame-backup"
+  "text": "Start your own game with pnpm setup:project. It asks which kind of game it is (a visual novel, or a game with maps), then removes the demo game from src/content and leaves a tiny starter: the player on an empty map (maps/start) and an empty common route for VN mode. The engine's own screens and scenes stay. Nothing is changed until you pick: Ctrl+C or an empty answer exits. If it finds a symbolic link where it deletes files, it stops before asking and changes nothing (the repository never has any, and deleting through one could reach files outside it): start again from a fresh clone. It runs once (undo with git checkout -- src/content && git clean -fd src/content). Keep the demo instead if y"
  },
  {
   "page": "index.html",
@@ -1228,7 +1228,7 @@ window.DOCS_INDEX = [
   "page": "systems/tools.html",
   "id": "tests",
   "title": "Tests",
-  "text": "pnpm test # everything once pnpm test:watch # re-run on save pnpm vitest run src/core/managers/party.test.ts # one file Tests to know: src/content/maps.test.ts: every map is well formed (spawns, doors, props, sprites, schedules) and structures fit. src/core/**/*.test.ts: the engine (battles, party, shops, saves and migrations, replays, input, tweens, grid…). vite/**: codegen (registry, Tiled, Aseprite, .vn compiler and checker). scripts/**: pnpm lang, pnpm story, this guide. Tips for writing tests: Component tests: put // @vitest-environment happy-dom on top and use @testing-library/react. Always await act(async () => …): a plain act with Suspense hangs. happy-dom has no layout: mock getBoun"
+  "text": "pnpm test # everything once pnpm test:watch # re-run on save pnpm vitest run src/core/managers/party.test.ts # one file Tests to know: src/content/maps.test.ts: every map is well formed (spawns, doors, props, sprites, schedules) and structures fit. src/core/**/*.test.ts: the engine (battles, party, shops, saves and migrations, replays, input, tweens, grid…). vite/**: codegen (registry, Tiled, Aseprite, .vn compiler and checker). scripts/**: pnpm lang, pnpm story, this guide. *.demo.test.ts / *.demo.test.tsx: tests that run on the demo game (its items, maps, recipes, translations, sounds). pnpm setup:project removes them together with the demo, so they never fail in your game. A test that nee"
  },
  {
   "page": "systems/tools.html",
@@ -1246,7 +1246,7 @@ window.DOCS_INDEX = [
   "page": "systems/tools.html",
   "id": "building",
   "title": "Building",
-  "text": "pnpm build # all targets below pnpm build:web # build/web (static files, host anywhere) pnpm build:linux # Linux AppImage pnpm build:win # Windows installer + portable .exe (needs wine on Linux) pnpm build:desktop # Linux + Windows pnpm build:android # Android debug APK (needs JDK 21 + Android SDK) pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite) pnpm vn:extension # build/vn-extension/*.vsix The web build uses relative paths, so build/web runs from any folder of any web server. .github/workflows/pages.yml publishes it to GitH"
+  "text": "pnpm build # all targets below pnpm build:web # build/web (static files, host anywhere) # every build first runs pnpm typecheck:build (types, tests left out) pnpm build:linux # Linux AppImage pnpm build:win # Windows installer + portable .exe (needs wine on Linux) pnpm build:desktop # Linux + Windows pnpm build:android # Android debug APK (needs JDK 21 + Android SDK) pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite) pnpm vn:extension # build/vn-extension/*.vsix The web build uses relative paths, so build/web runs from any fold"
  },
  {
   "page": "systems/tools.html",

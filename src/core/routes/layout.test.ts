@@ -9,7 +9,7 @@ type Loose = {
   startRoute: (id: string) => ReturnType<RouteContext['startRoute']>
 }
 const build = (run: (r: Loose) => unknown) =>
-  buildGraph('common' as RouteId, run as (ctx: RouteContext) => unknown)
+  buildGraph('common' as RouteId, run as unknown as (ctx: RouteContext) => unknown)
 const sizes = { width: 100, height: 40, gapX: 20, gapY: 30 }
 
 const example = () =>

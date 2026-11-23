@@ -10,7 +10,7 @@ type Loose = {
   choice: (o: Record<string, string>) => Promise<string>
 }
 const build = (run: (r: Loose) => unknown) =>
-  buildGraph('common' as RouteId, run as (ctx: RouteContext) => unknown)
+  buildGraph('common' as RouteId, run as unknown as (ctx: RouteContext) => unknown)
 const sizes = { width: 100, height: 40, gapX: 20, gapY: 30 }
 
 // a, then: met? -> g, then h; not met -> straight to h.

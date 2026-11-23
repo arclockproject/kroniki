@@ -26,6 +26,8 @@ describe('event memory', () => {
     useGameStore.setState((s) => {
       s.events[id] = { started: 1, finished: 1 }
     })
-    await expect(events.startOnce(id)).resolves.toBe(false)
+    // Loose call: the id is a plain test id, whatever params the game's events take.
+    const startOnce = events.startOnce as (id: EventId) => Promise<boolean>
+    await expect(startOnce(id)).resolves.toBe(false)
   })
 })

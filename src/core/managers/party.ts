@@ -2,7 +2,7 @@
 // Stats, slots and the XP curve: src/content/stats.ts. Each member's numbers: defineCharacter({ battle }).
 import statsConfig from '@/content/stats'
 import statusDefs from '@/content/statuses'
-import type { BattleStats, StatsConfig } from '../define'
+import type { BattleStats, SkillConfig, StatsConfig } from '../define'
 import { t } from '../lang'
 import {
   type CharacterId,
@@ -71,7 +71,7 @@ function announce(id: CharacterId, skill: SkillId) {
   toast(
     t('{name} learned {skill}!', {
       name: t(info(id)?.name ?? id),
-      skill: t(skillDefs?.[skill]?.name ?? skill),
+      skill: t((skillDefs?.[skill] as SkillConfig | undefined)?.name ?? skill),
     }),
     { kind: 'skillLearned', params: { character: id, skill } },
   )

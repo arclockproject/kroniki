@@ -12,7 +12,7 @@ type Loose = {
   choice: (options: Record<string, string>) => Promise<string>
 }
 const build = (run: (r: Loose) => unknown) =>
-  buildGraph('common' as RouteId, run as (ctx: RouteContext) => unknown)
+  buildGraph('common' as RouteId, run as unknown as (ctx: RouteContext) => unknown)
 
 /** The reference example (docs): A..J with joins, a skip past G, two exits. */
 async function ownerExample({ event, flag, startRoute }: Loose) {

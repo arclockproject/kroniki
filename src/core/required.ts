@@ -18,7 +18,27 @@ export const FEATURE_CONTENT: Record<string, Record<string, string>> = {
   },
   minigames: {
     battle: 'battles (game.battles.start(), random encounters)',
+    extras: 'the Extras screen (gallery, scene replay, music room, movies...)',
+    after_stories: 'the After Stories screen (VN mode, src/content/start.ts)',
   },
+  events: {
+    'extras/choice': 'choices in a route (choice() in src/content/routes)',
+    'extras/movie': 'movies in a route and in the Extras movie tab',
+  },
+  routes: {
+    common: 'VN mode: every new game starts this route',
+  },
+}
+
+/**
+ * Engine content kept by `pnpm setup:project` (scripts/setup-project.ts): everything above, as
+ * paths under src/content. The engine's own screens and scenes, never the demo game.
+ */
+export function engineContentPaths(): string[] {
+  const paths = Object.keys(REQUIRED_WINDOWS).map((id) => `windows/${id}`)
+  for (const [kind, ids] of Object.entries(FEATURE_CONTENT))
+    for (const id of Object.keys(ids)) paths.push(`${kind}/${id}`)
+  return paths
 }
 
 /** The error for content that is missing. */

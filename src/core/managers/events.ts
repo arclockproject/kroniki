@@ -257,3 +257,13 @@ export const events = {
     return useSystemStore.getState().event !== null
   },
 }
+
+/**
+ * Starts an event whose id comes from data (a map's intro, a timer, a route's box), so its params
+ * can't be known here. Typed loosely on purpose: with game.events.start the call would stop
+ * compiling once every event of a game takes params.
+ */
+export function startEvent(id: string, params?: unknown): Promise<void> {
+  const start = events.start as (id: string, params?: unknown) => Promise<void>
+  return params === undefined ? start(id) : start(id, params)
+}

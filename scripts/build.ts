@@ -199,7 +199,8 @@ function findAndroidSdk(): string {
 
 function buildWeb(): boolean {
   const mode = LITE ? ['--mode', 'lite'] : []
-  return run('pnpm', ['typecheck']) && run('pnpm', ['exec', 'vite', 'build', ...mode])
+  // The game and engine code only: the engine's tests never stop a game from building.
+  return run('pnpm', ['typecheck:build']) && run('pnpm', ['exec', 'vite', 'build', ...mode])
 }
 
 let electronMainBuilt = false

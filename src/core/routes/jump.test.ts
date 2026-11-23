@@ -9,7 +9,7 @@ type Loose = {
   startRoute: (id: string) => ReturnType<RouteContext['startRoute']>
 }
 const build = (id: string, run: (r: Loose) => unknown) =>
-  buildGraph(id as RouteId, run as (ctx: RouteContext) => unknown)
+  buildGraph(id as RouteId, run as unknown as (ctx: RouteContext) => unknown)
 
 // The reference example, cut down: d splits into e / f, g may be skipped, both reach h.
 const common = () =>

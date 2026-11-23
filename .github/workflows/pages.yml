@@ -1,7 +1,8 @@
 # Publishes the GitHub Pages site. Runs only by hand: GitHub -> Actions -> Pages -> "Run workflow"
 # (pick the branch), so pushes never rebuild the site by themselves.
-#   /kroniki/        the Kroniki Engine guide (docs/)
-#   /kroniki/demo/   the web build of the game (pnpm build:web -> build/web)
+# Site: https://kroniki.arclockproject.org (custom domain, set in Settings -> Pages)
+#   /        the Kroniki Engine guide (docs/)
+#   /demo/   the web build of the game (pnpm build:web -> build/web)
 # The web build uses relative paths (vite.config.ts base: './'), so it runs from any folder.
 # Repository settings -> Pages -> Source must be "GitHub Actions".
 name: Pages

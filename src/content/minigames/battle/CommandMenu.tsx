@@ -1,7 +1,7 @@
 import { Box, Button, Paper, Stack, Typography } from '@mui/material'
 import { type RefObject, useEffect, useState } from 'react'
 import type { Action, Battle, Fighter, Outcome } from '@/core/battle/engine'
-import type { BattleTarget } from '@/core/define'
+import type { BattleTarget, SkillConfig } from '@/core/define'
 import { game } from '@/core/game'
 import { useLang } from '@/core/lang'
 import type { BattleParams } from '@/core/managers/battles'
@@ -214,7 +214,7 @@ export function CommandMenu({
       ) : menu.kind === 'skills' ? (
         <Box sx={list(small ? 2 : 1)}>
           {current.skills.map((id) => {
-            const skill = skills[id as SkillId]
+            const skill = skills[id as SkillId] as SkillConfig | undefined
             if (!skill) return null
             const cost = skill.mp ?? 0
             const delay = skill.delay ?? 1
