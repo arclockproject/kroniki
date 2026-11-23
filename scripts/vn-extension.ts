@@ -1,4 +1,4 @@
-// pnpm vn:extension -> build/vn-extension/EngineToolKit-<version>.vsix
+// pnpm vn:extension -> build/vn-extension/kroniki-vn-scripts-<version>.vsix
 // Install in VSCodium: Extensions view → "…" menu → "Install from VSIX…".
 // Only needed when the extension's own code changes; new game content is picked up automatically.
 import { execFileSync } from 'node:child_process'

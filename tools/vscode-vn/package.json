@@ -1,8 +1,8 @@
 {
-  "name": "EngineToolKit",
-  "displayName": "EngineToolKit (.vn dialogue scripts)",
-  "description": "Colouring, suggestions and error checks for the game's .vn dialogue scripts. Reads ids (characters, poses, flags, items…) from the open project, so new content works without updating the extension.",
-  "version": "0.1.12",
+  "name": "kroniki-vn-scripts",
+  "displayName": "Kroniki VN Scripts",
+  "description": "Coloring, suggestions and error checks for Kroniki Engine .vn dialogue scripts. Reads ids (characters, poses, flags, items...) from the open project, so new content works without updating the extension.",
+  "version": "0.2.0",
   "publisher": "INSERTORGANISATIONHERE",
   "license": "UNLICENSED",
   "engines": {
@@ -41,14 +41,14 @@
     ],
     "commands": [
       {
-        "command": "EngineToolKit.showGenerated",
+        "command": "kroniki-vn.showGenerated",
         "title": "VN: Show generated TypeScript"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "command": "EngineToolKit.showGenerated",
+          "command": "kroniki-vn.showGenerated",
           "when": "resourceLangId == vn",
           "group": "navigation"
         }

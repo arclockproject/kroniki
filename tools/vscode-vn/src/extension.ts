@@ -157,7 +157,7 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('EngineToolKit.showGenerated', async () => {
+    vscode.commands.registerCommand('kroniki-vn.showGenerated', async () => {
       const document = vscode.window.activeTextEditor?.document
       if (document?.languageId !== 'vn') return
       const generated = document.uri.fsPath.replace(/\.vn$/i, '.gen.ts')

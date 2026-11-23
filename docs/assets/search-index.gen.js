@@ -1012,7 +1012,7 @@ window.DOCS_INDEX = [
   "page": "story/vn.html",
   "id": "extension",
   "title": "Editor extension",
-  "text": "For VSCodium / VS Code: colouring, suggestions and red underlines while you type. Build it: pnpm vn:extension → build/vn-extension/EngineToolKit-<version>.vsix. In the editor's Extensions view: the … menu → Install from VSIX… → pick that file. Suggestions by context: characters and commands at the start of a line, poses after anna: or pose, stage positions after at, items after give, enemies and troops after battle, sounds after music, flags after set or inside flag(', markup tags after {. Checks as you type: unknown ids with \"did you mean\", lines it doesn't understand, bad indentation, a voice number one speaker already used in the file. Voice numbers: after anna( the first suggestion is An"
+  "text": "Kroniki VN Scripts, for VSCodium / VS Code: colouring, suggestions and red underlines while you type. Build it: pnpm vn:extension → build/vn-extension/kroniki-vn-scripts-<version>.vsix. In the editor's Extensions view: the … menu → Install from VSIX… → pick that file. Suggestions by context: characters and commands at the start of a line, poses after anna: or pose, stage positions after at, items after give, enemies and troops after battle, sounds after music, flags after set or inside flag(', markup tags after {. Checks as you type: unknown ids with \"did you mean\", lines it doesn't understand, bad indentation, a voice number one speaker already used in the file. Voice numbers: after anna( t"
  },
  {
   "page": "story/vn.html",

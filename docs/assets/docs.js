@@ -97,7 +97,7 @@ function buildNav() {
   theme.addEventListener('click', toggleTheme)
   nav.append(
     el('div', { className: 'title' }, [
-      el('a', { href: link('index.html'), textContent: 'Engine Guide', className: 'home-link' }),
+      el('a', { href: link('index.html'), textContent: 'Kroniki Engine', className: 'home-link' }),
       theme,
     ]),
     buildSearch(),

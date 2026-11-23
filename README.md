@@ -1,14 +1,14 @@
-# VN-RPG-Engine
+# Kroniki Engine
 
 A game engine for **visual novels and story-driven RPGs**, built with React and PixiJS. Write scenes as plain text, draw maps in Tiled, and ship one game to desktop (Windows, Linux), Android and the browser, with keyboard, gamepad and touch support.
 
-**[Read the Engine Guide](https://arclockproject.github.io/VNRPGEngine/)** (also in [`docs/`](docs/index.html) as plain HTML pages) | **[Get started](https://arclockproject.github.io/VNRPGEngine/#setup)** | **[Play the live demo](https://arclockproject.github.io/VNRPGEngine/demo/)**
+**[Read the guide](https://arclockproject.github.io/kroniki/)** (also in [`docs/`](docs/index.html) as plain HTML pages) | **[Get started](https://arclockproject.github.io/kroniki/#setup)** | **[Play the live demo](https://arclockproject.github.io/kroniki/demo/)**
 
 ---
 
 ## Live demo
 
-Play the demo game in your browser: **[arclockproject.github.io/VNRPGEngine/demo/](https://arclockproject.github.io/VNRPGEngine/demo/)**. It is the web build of this repository, published together with the Engine Guide by [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which is run by hand from the Actions tab.
+Play the demo game in your browser: **[arclockproject.github.io/kroniki/demo/](https://arclockproject.github.io/kroniki/demo/)**. It is the web build of this repository, published together with the guide by [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which is run by hand from the Actions tab.
 
 ## What it does
 
@@ -72,22 +72,22 @@ choice:
 
 `.vn` is optional. A scene can just as well be a plain TypeScript event (`say()`, `choice()`, `game.*`), and a game can mix both. A `.vn` file is compiled to TypeScript, so it can do everything a `.ts` event can.
 
-If you do use `.vn`, the editor extension for VSCodium / VS Code gives you full support:
+If you do use `.vn`, the **Kroniki VN Scripts** editor extension for VSCodium / VS Code gives you full support:
 
 - **Syntax colors** for speakers, commands, markup and choices.
 - **Autocomplete by context:** characters, poses, stage positions, items, flags, sounds and voice clip numbers, read from your own project. New content shows up right away, without reinstalling.
 - **Checks as you type:** unknown ids (with "did you mean"), lines it doesn't understand and bad indentation.
 - **Show generated TypeScript:** see exactly what a scene compiles to.
 
-Build it with `pnpm vn:extension`, then install `build/vn-extension/*.vsix` with "Install from VSIX..." in the editor's Extensions view. More in the guide: [Dialogue scripts (.vn)](https://arclockproject.github.io/VNRPGEngine/story/vn.html#extension).
+Build it with `pnpm vn:extension`, then install `build/vn-extension/*.vsix` with "Install from VSIX..." in the editor's Extensions view. More in the guide: [Dialogue scripts (.vn)](https://arclockproject.github.io/kroniki/story/vn.html#extension).
 
 ## Quick start
 
 You need Node.js 24, pnpm (`corepack enable pnpm`) and [Git LFS](https://git-lfs.com). The demo's art and sound files are stored with Git LFS, and the game doesn't build without them.
 
 ```sh
-git clone https://github.com/arclockproject/VNRPGEngine.git
-cd VNRPGEngine
+git clone https://github.com/arclockproject/kroniki.git
+cd kroniki
 pnpm install
 pnpm dev:browser    # open the address it prints
 ```
@@ -99,7 +99,7 @@ pnpm setup:lfs
 tools/git-lfs/git-lfs pull
 ```
 
-Then give the game its name and ids in `src/content/config/app.ts`. The guide's [First steps](https://arclockproject.github.io/VNRPGEngine/#setup) explains each field.
+Then give the game its name and ids in `src/content/config/app.ts`. The guide's [First steps](https://arclockproject.github.io/kroniki/#setup) explains each field.
 
 ## Commands
 
@@ -114,7 +114,7 @@ Then give the game its name and ids in `src/content/config/app.ts`. The guide's 
 | `pnpm lint` | Biome lint and format check (`pnpm lint:fix` fixes what it can) |
 | `pnpm lang` | Translation status (`--write` adds missing keys) |
 | `pnpm vn:extension` | Builds the `.vn` editor extension |
-| `pnpm guide` | Refreshes the Engine Guide's search index |
+| `pnpm guide` | Refreshes the guide's search index |
 
 ## Project layout
 
@@ -125,7 +125,7 @@ src/
     ui/         how the engine's screens are laid out
     look/       colors, fonts, frames, buttons and UI sounds
   core/         the engine
-docs/           the Engine Guide (open docs/index.html in a browser)
+docs/           the guide (open docs/index.html in a browser)
 scripts/        build, test and tool scripts
 electron/       desktop app shell
 android/        Android project
@@ -137,14 +137,18 @@ React, Material UI, PixiJS 8, zustand with immer, Vite, TypeScript, Electron, Ca
 
 ## Documentation
 
-The [Engine Guide](https://arclockproject.github.io/VNRPGEngine/) covers everything, with examples:
+The [Kroniki Engine guide](https://arclockproject.github.io/kroniki/) covers everything, with examples:
 
-- [Recipes](https://arclockproject.github.io/VNRPGEngine/recipes.html): step by step guides for a talking NPC, a new map, a shop, a quest, a battle area...
-- **World:** [maps](https://arclockproject.github.io/VNRPGEngine/world/maps.html), [characters](https://arclockproject.github.io/VNRPGEngine/world/characters.html), [art](https://arclockproject.github.io/VNRPGEngine/world/art.html)
-- **Story:** [writing a scene](https://arclockproject.github.io/VNRPGEngine/story/events/scripts.html), [`.vn` scripts](https://arclockproject.github.io/VNRPGEngine/story/vn.html), [routes and flowchart](https://arclockproject.github.io/VNRPGEngine/story/routes.html)
-- **Gameplay:** [items](https://arclockproject.github.io/VNRPGEngine/gameplay/items.html), [quests](https://arclockproject.github.io/VNRPGEngine/gameplay/progress.html), [battles](https://arclockproject.github.io/VNRPGEngine/gameplay/battles.html), [extras](https://arclockproject.github.io/VNRPGEngine/gameplay/extras.html)
-- **Interface:** [screens](https://arclockproject.github.io/VNRPGEngine/interface/screens.html), [input](https://arclockproject.github.io/VNRPGEngine/interface/input.html), [look](https://arclockproject.github.io/VNRPGEngine/interface/look.html), [translations](https://arclockproject.github.io/VNRPGEngine/interface/translations.html)
-- **Systems:** [audio](https://arclockproject.github.io/VNRPGEngine/systems/audio.html), [saves](https://arclockproject.github.io/VNRPGEngine/systems/saves.html), [variants](https://arclockproject.github.io/VNRPGEngine/systems/variants.html), [tools and building](https://arclockproject.github.io/VNRPGEngine/systems/tools.html)
+- [Recipes](https://arclockproject.github.io/kroniki/recipes.html): step by step guides for a talking NPC, a new map, a shop, a quest, a battle area...
+- **World:** [maps](https://arclockproject.github.io/kroniki/world/maps.html), [characters](https://arclockproject.github.io/kroniki/world/characters.html), [art](https://arclockproject.github.io/kroniki/world/art.html)
+- **Story:** [writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html), [`.vn` scripts](https://arclockproject.github.io/kroniki/story/vn.html), [routes and flowchart](https://arclockproject.github.io/kroniki/story/routes.html)
+- **Gameplay:** [items](https://arclockproject.github.io/kroniki/gameplay/items.html), [quests](https://arclockproject.github.io/kroniki/gameplay/progress.html), [battles](https://arclockproject.github.io/kroniki/gameplay/battles.html), [extras](https://arclockproject.github.io/kroniki/gameplay/extras.html)
+- **Interface:** [screens](https://arclockproject.github.io/kroniki/interface/screens.html), [input](https://arclockproject.github.io/kroniki/interface/input.html), [look](https://arclockproject.github.io/kroniki/interface/look.html), [translations](https://arclockproject.github.io/kroniki/interface/translations.html)
+- **Systems:** [audio](https://arclockproject.github.io/kroniki/systems/audio.html), [saves](https://arclockproject.github.io/kroniki/systems/saves.html), [variants](https://arclockproject.github.io/kroniki/systems/variants.html), [tools and building](https://arclockproject.github.io/kroniki/systems/tools.html)
+
+## About the name
+
+*Kroniki* (said "kro-NEE-kee") is Polish for "chronicles". Every game made with the engine is a chronicle of its own: a story with its routes, choices and endings, and the adventures of the people who live in its world.
 
 ## License
 
