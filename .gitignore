@@ -29,6 +29,6 @@ android/keystore.properties
 *.keystore
 
 # Worker secrets
-CLAUDE*md
+CLAUDE.md
 dev-notes
-Working.md
+.claude/skills/notes-*

@@ -62,6 +62,8 @@ export interface LaidLine {
   points: [number, number][]
   /** Starts at the side corner of a diamond: the first stretch goes across, then down. */
   side?: boolean
+  /** Ends on the side of its box: the last stretch goes down, then across into it. */
+  sideEnd?: boolean
   /** For each stretch: the height of the part that runs across (null = halfway). */
   bends?: (number | null)[]
 }
@@ -210,12 +212,15 @@ export function layoutGraph(
   const down = new Map<string, string[]>()
   const straightUp = new Map<string, string>()
   const straightDown = new Map<string, string>()
+  /** How many straight lines come into each box (2+ = a join: no single column to stay in). */
+  const straightIn = new Map<string, number>()
   const link = (a: string, b: string, straight: boolean) => {
     down.set(a, [...(down.get(a) ?? []), b])
     up.set(b, [...(up.get(b) ?? []), a])
     if (straight) {
       if (!straightDown.has(a)) straightDown.set(a, b)
       if (!straightUp.has(b)) straightUp.set(b, a)
+      straightIn.set(b, (straightIn.get(b) ?? 0) + 1)
     }
   }
   for (const c of chains) {
@@ -284,14 +289,42 @@ export function layoutGraph(
   }
   const mean = (list: string[] | undefined) =>
     list?.length ? list.reduce((s, k) => s + (x.get(k) as number), 0) / list.length : null
+  // A box where ways join again goes back under the box where they split (the lowest box every
+  // way into it passes), not halfway between its parents or under the first of several straight
+  // lines: else every join is pulled off to one side, and a long chart drifts sideways.
+  const ancestors = new Map<string, Set<string>>()
+  const ancestorsOf = (k: string): Set<string> => {
+    const known = ancestors.get(k)
+    if (known) return known
+    const set = new Set([k])
+    ancestors.set(k, set)
+    for (const p of up.get(k) ?? []) for (const a of ancestorsOf(p)) set.add(a)
+    return set
+  }
+  const splitOf = new Map<string, string>()
+  for (const k of row.keys()) {
+    const parents = up.get(k) ?? []
+    if (parents.length < 2) continue
+    const [first, ...rest] = parents.map(ancestorsOf)
+    let best: string | undefined
+    for (const a of first ?? []) {
+      if (!rest.every((s) => s.has(a))) continue
+      if (best === undefined || (row.get(a) ?? 0) > (row.get(best) ?? 0)) best = a
+    }
+    if (best !== undefined) splitOf.set(k, best)
+  }
   const pinned = (k: string) => k !== origin && cfg[k]?.column !== undefined
-  /** Where an anchored box must be, and how strong the anchor is (0 = none). */
+  /** Where an anchored box must be, and how strong the anchor is (0 = none). A join (1.5) beats a
+   * straight line passing through its row, so that line goes around it. */
   const anchor = (k: string, downward: boolean): [number, number] | null => {
     const column = cfg[k]?.column
     if (pinned(k) && origin && column !== undefined)
       return [(x.get(origin) as number) + column * step, 3]
     const align = cfg[k]?.align
     if (align && x.has(align) && row.get(align) !== row.get(k)) return [x.get(align) as number, 2]
+    const split = splitOf.get(k)
+    if (downward && split !== undefined && straightIn.get(k) !== 1)
+      return [x.get(split) as number, 1.5]
     const s = (downward ? straightUp : straightDown).get(k)
     return s !== undefined ? [x.get(s) as number, 1] : null
   }
@@ -320,8 +353,17 @@ export function layoutGraph(
       if (a && (best < 0 || a[1] > (anchors[best]?.[1] ?? 0))) best = i
     })
     if (best >= 0) {
-      const shift = (want[best] as number) - (x.get(r[best] as string) as number)
-      for (const k of r) x.set(k, (x.get(k) as number) + shift)
+      // The strongest anchor is exactly in place; the others go as near to where they want to be
+      // as it lets them (not the whole row moved with it: that took straight lines out of line).
+      x.set(r[best] as string, want[best] as number)
+      for (let j = best + 1; j < r.length; j++) {
+        const min = (x.get(r[j - 1] as string) as number) + gap(r[j - 1] as string, r[j] as string)
+        x.set(r[j] as string, Math.max(want[j] as number, min))
+      }
+      for (let j = best - 1; j >= 0; j--) {
+        const max = (x.get(r[j + 1] as string) as number) - gap(r[j] as string, r[j + 1] as string)
+        x.set(r[j] as string, Math.min(want[j] as number, max))
+      }
     }
     // Other column pins in the row: exactly in place too, pushing their neighbours aside.
     anchors.forEach((a, i) => {
@@ -354,13 +396,68 @@ export function layoutGraph(
   const left = Math.min(...[...x].map(([k, v]) => v - half(k)))
   for (const [k, v] of x) x.set(k, v - left)
 
-  // A diamond's side line leaves from its side corner when its first step is off to that side.
+  // A diamond's line leaves from a side corner when its first step is off to that side (one line
+  // per corner: the one going furthest; the others leave from the bottom tip). Corner lines run
+  // across at the diamond's height, so two in one row must not overlap: the shortest goes first,
+  // and a later one that would run into it turns down early and enters its box from the side
+  // (when it goes straight into a box on the next row), else it leaves from the bottom tip.
   const firstStep = (c: Chain) => x.get(c.via[0] ?? c.to) as number
-  const lastStep = (c: Chain) => x.get(c.via.at(-1) ?? c.from) as number
-  const fromSide = (c: Chain) =>
-    c.edge.side &&
-    !lineCfg(c.from, c.to)?.via &&
-    Math.abs(firstStep(c) - (x.get(c.from) as number)) > half(c.from)
+  const sideStart = new Set<Chain>()
+  /** Corner lines that turn down early: where they turn. */
+  const turnAt = new Map<Chain, number>()
+  const corners: Chain[] = []
+  for (const k of keys) {
+    if (!isBranch(k)) continue
+    const middle = x.get(k) as number
+    for (const s of [-1, 1]) {
+      let far: Chain | undefined
+      for (const c of chains) {
+        if (c.from !== k || lineCfg(c.from, c.to)?.via) continue
+        const d = (firstStep(c) - middle) * s
+        if (d > half(k) && (!far || d > (firstStep(far) - middle) * s)) far = c
+      }
+      if (far) corners.push(far)
+    }
+  }
+  const reach = (c: Chain) => Math.abs(firstStep(c) - (x.get(c.from) as number))
+  corners.sort((a, b) => reach(a) - reach(b))
+  const taken: { row: number; lo: number; hi: number }[] = []
+  /** Something (another corner line, a box, a passing line) in the way on row r, between lo and hi. */
+  const runBlocked = (r: number, lo: number, hi: number, self: string) =>
+    taken.some((t) => t.row === r && t.lo < hi + lineGap && lo < t.hi + lineGap) ||
+    (byRow[r] ?? []).some(
+      (k) =>
+        k !== self && (x.get(k) as number) + half(k) > lo && (x.get(k) as number) - half(k) < hi,
+    )
+  for (const c of corners) {
+    const r = row.get(c.from) as number
+    const from = x.get(c.from) as number
+    const to = firstStep(c)
+    const s = Math.sign(to - from)
+    const out = from + s * half(c.from)
+    if (!runBlocked(r, Math.min(out, to), Math.max(out, to), c.from)) {
+      sideStart.add(c)
+      taken.push({ row: r, lo: Math.min(from, to), hi: Math.max(from, to) })
+      continue
+    }
+    const own = lineCfg(c.from, c.to)
+    if (c.via.length || isBranch(c.to) || own?.end !== undefined || own?.enter === 'top') continue
+    // Turn down as near its box as it can, clear of the box's row and of other corner lines.
+    const edge = to - s * half(c.to)
+    const targetRow = byRow[row.get(c.to) as number] ?? []
+    const clear = (at: number) =>
+      !targetRow.some((k) => Math.abs((x.get(k) as number) - at) < half(k) + lineGap / 2)
+    for (let at = edge - s * lineGap; (at - out) * s >= lineGap / 2; at -= s * 4) {
+      if (!clear(at) || runBlocked(r, Math.min(out, at), Math.max(out, at), c.from)) continue
+      sideStart.add(c)
+      turnAt.set(c, at)
+      taken.push({ row: r, lo: Math.min(from, at), hi: Math.max(from, at) })
+      break
+    }
+  }
+  const fromSide = (c: Chain) => sideStart.has(c)
+  /** Where a line comes down for the last time (its turn, its last place holder, or its box). */
+  const lastStep = (c: Chain) => turnAt.get(c) ?? (x.get(c.via.at(-1) ?? c.from) as number)
 
   // Ports: several lines leaving (or entering) one box use their own points along its edge, in
   // the order of where they go (or come from), so they never run on top of each other.
@@ -376,6 +473,47 @@ export function layoutGraph(
     if (!fromSide(c)) outOf.set(c.from, [...(outOf.get(c.from) ?? []), c])
     into.set(c.to, [...(into.get(c.to) ?? []), c])
   }
+  // A box that several lines come into: a line coming down from well off to one side goes on
+  // past the top and enters the box's side (nearest line highest, so they never cross), when
+  // nothing in the box's row is in its way. Fewer lines crowd its top edge. flow.ts `enter` on a
+  // line decides by hand ('top', 'left', 'right').
+  /** Side entries: chain -> how far down the box's side (0..1). */
+  const sideEnd = new Map<Chain, number>()
+  /** Which side a side entry goes into (-1 left, 1 right). */
+  const sideOf = new Map<Chain, number>()
+  for (const [to, list] of into) {
+    if (isBranch(to)) continue
+    const middle = x.get(to) as number
+    const inRow = byRow[row.get(to) as number] ?? []
+    for (const s of [-1, 1]) {
+      const fit = list.filter((c) => {
+        if (turnAt.has(c)) return (lastStep(c) - middle) * s > 0
+        const own = lineCfg(c.from, c.to)
+        if (own?.via || own?.end !== undefined || (fromSide(c) && c.via.length === 0)) return false
+        if (own?.enter === 'top') return false
+        if (own?.enter) return (own.enter === 'left' ? -1 : 1) === s
+        if (list.length < 2) return false
+        const at = lastStep(c)
+        if ((at - middle) * s <= half(to) + lineGap / 2) return false
+        const lo = Math.min(at, middle) - lineGap / 2
+        const hi = Math.max(at, middle) + lineGap / 2
+        return !inRow.some(
+          (k) =>
+            k !== to && (x.get(k) as number) + half(k) > lo && (x.get(k) as number) - half(k) < hi,
+        )
+      })
+      fit.sort((a, b) => (lastStep(a) - middle) * s - (lastStep(b) - middle) * s)
+      fit.forEach((c, i) => {
+        sideEnd.set(c, (i + 1) / (fit.length + 1))
+        sideOf.set(c, s)
+      })
+    }
+  }
+  for (const [to, list] of into)
+    into.set(
+      to,
+      list.filter((c) => !sideEnd.has(c)),
+    )
   for (const list of outOf.values()) list.sort((a, b) => firstStep(a) - firstStep(b))
   for (const list of into.values()) list.sort((a, b) => lastStep(a) - lastStep(b))
   const startX = (c: Chain) => {
@@ -391,6 +529,8 @@ export function layoutGraph(
     const middle = x.get(c.to) ?? 0
     const own = lineCfg(c.from, c.to)?.end
     if (own !== undefined) return middle + own
+    const side = sideOf.get(c)
+    if (side !== undefined) return middle + side * half(c.to)
     const list = into.get(c.to) ?? []
     const w = widthOf(c.to)
     const s = list.find((l) => l.edge.straight)
@@ -410,6 +550,7 @@ export function layoutGraph(
     const rowsOf = [row.get(c.from) as number, ...c.via.map((h) => row.get(h) as number)]
     for (let i = 0; i + 1 < pts.length; i++) {
       if (i === 0 && fromSide(c)) continue
+      if (i === pts.length - 2 && sideEnd.has(c)) continue
       const a = pts[i] as number
       const b = pts[i + 1] as number
       if (Math.abs(a - b) < 0.5) continue
@@ -485,10 +626,19 @@ export function layoutGraph(
       pts[0] as number,
       side ? yOf(c.from) + heightOf(c.from) / 2 : yOf(c.from) + heightOf(c.from),
     ]
-    const end: [number, number] = [pts.at(-1) as number, yOf(c.to)]
+    const entry = sideEnd.get(c)
+    const end: [number, number] = [
+      pts.at(-1) as number,
+      yOf(c.to) + (entry === undefined ? 0 : heightOf(c.to) * entry),
+    ]
     const points: [number, number][] = own?.via
       ? [start, ...own.via.map(([vx, vy]): [number, number] => [vx, vy]), end]
-      : [start, ...c.via.map((h, i): [number, number] => [pts[i + 1] as number, yOf(h)]), end]
+      : [
+          start,
+          ...c.via.map((h, i): [number, number] => [pts[i + 1] as number, yOf(h)]),
+          ...(turnAt.has(c) ? [[turnAt.get(c) as number, end[1]] as [number, number]] : []),
+          end,
+        ]
     // Heights of the parts that run across: a lane in the gap above (autoFix), plus flow.ts bend.
     const rowsOf = [row.get(c.from) as number, ...c.via.map((h) => row.get(h) as number)]
     const bends = points.slice(1).map((p, i): number | null => {
@@ -503,6 +653,7 @@ export function layoutGraph(
       } else if (headerAfter(r) && !own?.via && runs.some((x) => x.id === `${ci}:${i}`)) {
         at = gapTop + linesGap(r) / 2
       }
+      if (entry !== undefined && i === points.length - 2) return null
       if (own?.bend) at = (at ?? ((points[i] as [number, number])[1] + p[1]) / 2) + own.bend
       return at
     })
@@ -511,6 +662,7 @@ export function layoutGraph(
       to: c.to,
       points,
       ...(side ? { side: true } : {}),
+      ...(entry !== undefined ? { sideEnd: true } : {}),
       ...(bends.some((b) => b !== null) ? { bends } : {}),
     }
   })

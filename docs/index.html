@@ -16,9 +16,10 @@
 <main>
 <h1>Engine Guide</h1>
 
-<p class="lead">How this game engine works and how to add content to it. React + Material UI for screens, PixiJS for the map, zustand for state. Runs as a desktop app (Electron), an Android app and in the browser, with keyboard, gamepad and touch.</p>
+<p class="lead">How this game engine works and how to add content to it. React + Material UI for screens, PixiJS for the map, zustand for state. Runs as a desktop app (Electron), an Android app and in the browser, with keyboard, gamepad and touch. <a href="https://arclockproject.github.io/VNRPGEngine/demo/">Play the live demo</a> in your browser.</p>
 
 <div class="cards">
+  <a href="https://arclockproject.github.io/VNRPGEngine/demo/"><b>Live demo</b><span>Play the demo game in your browser: the web build of this project</span></a>
   <a href="recipes.html"><b>Recipes</b><span>Step by step: a talking NPC, a new map, a shop, a quest, a battle area…</span></a>
   <a href="world/maps.html"><b>Maps &amp; the world</b><span>Tiled maps, doors, props, structures, time of day, lights</span></a>
   <a href="story/events/scripts.html"><b>Events</b><span>Visual-novel scenes: dialogue, choices, portraits, effects</span></a>
@@ -49,7 +50,7 @@ export default {
   <li>Also give the title screen its name: <code>name</code> in <code>src/content/titles/default/index.ts</code> (and its translations in <code>src/content/lang/</code>), and the title screens' <code>alt</code> text.</li>
   <li>The icons are files in <code>src/content/assets/icon/</code>: one per kind (tab and desktop, Android square, round, adaptive): see <a href="systems/tools.html#icons">Icons and splash</a>.</li>
 </ul>
-<p>Then run <code>pnpm setup:lfs</code> once (art and sound files).</p>
+<p>The art and sound files are stored with <a href="https://git-lfs.com">Git LFS</a>, and the game doesn't build without them (the sprites' generated files are missing). With Git LFS installed, <code>git clone</code> gets them by itself. Without it, <code>pnpm setup:lfs</code> (optional) downloads Git LFS into <code>tools/git-lfs</code> for this repository only; then run <code>tools/git-lfs/git-lfs pull</code> once to fetch the files the clone left as placeholders.</p>
 
 <h2 id="setup">Setup and commands</h2>
 <pre><code class="language-sh">source ~/.nvm/nvm.sh &amp;&amp; nvm use 24     # node is only on the PATH after this
@@ -66,7 +67,7 @@ pnpm icons              # Android launcher icons from src/content/assets/icon (b
 pnpm build              # everything: web, Linux, Windows, Android (installers in build/dist)
 pnpm build:web          # build/web (add --lite for the lite build)
 pnpm build:linux        # one target; also build:win, build:android (see Tools → Building)
-pnpm setup:lfs          # once per clone: Git LFS for art and sound files
+pnpm setup:lfs          # optional: Git LFS just for this repo (if it isn't installed), then tools/git-lfs/git-lfs pull
 pnpm vn:extension       # editor extension for .vn files (build/vn-extension/*.vsix)
 pnpm guide              # refresh this guide's search and code colours</code></pre>
 <p>Open the game at the address the dev server prints. Press <code>`</code> for the <a href="systems/tools.html#dev-panel">dev panel</a>.</p>

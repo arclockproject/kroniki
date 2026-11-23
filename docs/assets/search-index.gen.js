@@ -922,7 +922,7 @@ window.DOCS_INDEX = [
   "page": "story/routes.html",
   "id": "window",
   "title": "The flowchart window",
-  "text": "Side panel (picture, title, route, description, Load), the chart, and a tab per route reached. The window starts on the box the story is at. Keys / pad: arrows move between boxes (the panel follows), confirm picks a box (its way lights up), confirm again asks to load it. LB / RB (Q / R) switch routes. Touch / mouse: tap a box, tap it again (or press Load). Boxes not reached yet are invisible (VN style: they keep their place, so the chart doesn't jump around, but nothing of the future shows, not even how many endings there are). Every line leaving a reached box is drawn (dashed into a box not reached yet), but nothing past that box: the player sees that a scene branches, not where to. u"
+  "text": "Side panel (picture, title, route, description, Load), the chart, and a tab per route reached. The window starts on the box the story is at. Keys / pad: arrows move between boxes (the panel follows), confirm picks a box (its way lights up), confirm again asks to load it. LB / RB (Q / R) switch routes. Touch / mouse: tap a box, tap it again (or press Load). Boxes not reached yet are invisible (VN style: they keep their place, so the chart doesn't jump around, but nothing of the future shows, not even how many endings there are). Every line leaving a reached box is drawn (dashed into a box not reached yet), but nothing past that box: the player sees that a scene branches, not where to. unseen:"
  },
  {
   "page": "story/routes.html",
@@ -1066,7 +1066,7 @@ window.DOCS_INDEX = [
   "page": "systems/audio.html",
   "id": "system-voice",
   "title": "System voice",
-  "text": "Short clips a character says for the menus, as in VN games: the title call, \"Saved!\", \"Goodbye\". The player picks who speaks in Settings → Voices → System voice (a character, Random or Off). Random picks, each time, one of the characters who have that clip. src/content/audio/system_voice/anna/title_call.ogg src/content/audio/system_voice/anna/saved.ogg src/content/audio/system_voice/anna/quit.ogg <Button data-voice=\"shop_open\">Shop</Button> // any button or row: the clip plays with the click sound game.systemVoice.play('saved') // from code (typed: the file names) game.systemVoice.playAfterReplay('loaded') // after a loaded mid-scene save has caught up await game.systemVoice.finish() /"
+  "text": "Short clips a character says for the menus, as in VN games: the title call, \"Saved!\", \"Goodbye\". The player picks who speaks in Settings → Voices → System voice (a character, Random or Off). Random picks, each time, one of the characters who have that clip. src/content/audio/system_voice/anna/title_call.ogg src/content/audio/system_voice/anna/saved.ogg src/content/audio/system_voice/anna/quit.ogg <Button data-voice=\"shop_open\">Shop</Button> // any button or row: the clip plays with the click sound game.systemVoice.play('saved') // from code (typed: the file names) game.systemVoice.playAfterReplay('loaded') // after a loaded mid-scene save has caught up await game.systemVoice.finish() // wait"
  },
  {
   "page": "systems/audio.html",
@@ -1246,7 +1246,7 @@ window.DOCS_INDEX = [
   "page": "systems/tools.html",
   "id": "building",
   "title": "Building",
-  "text": "pnpm build # all targets below pnpm build:web # build/web (static files, host anywhere) pnpm build:linux # Linux AppImage pnpm build:win # Windows installer + portable .exe (needs wine on Linux) pnpm build:desktop # Linux + Windows pnpm build:android # Android debug APK (needs JDK 21 + Android SDK) pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite) pnpm vn:extension # build/vn-extension/*.vsix"
+  "text": "pnpm build # all targets below pnpm build:web # build/web (static files, host anywhere) pnpm build:linux # Linux AppImage pnpm build:win # Windows installer + portable .exe (needs wine on Linux) pnpm build:desktop # Linux + Windows pnpm build:android # Android debug APK (needs JDK 21 + Android SDK) pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite) pnpm vn:extension # build/vn-extension/*.vsix The web build uses relative paths, so build/web runs from any folder of any web server. .github/workflows/pages.yml publishes it to GitH"
  },
  {
   "page": "systems/tools.html",

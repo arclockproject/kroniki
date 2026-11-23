@@ -149,13 +149,14 @@ export default defineFlow('common', {
 <p>Make it look like your game:</p>
 <ul>
 <li><b>Box looks</b>: the <code>flow…</code> parts in <code>src/content/look/parts.ts</code>: <code>flowNode</code> (every box, with <code>focus</code>), and added on top <code>flowNodeLocked</code>, <code>flowNodeSelected</code>, <code>flowNodeOnPath</code>, <code>flowNodeCurrent</code>, <code>flowRouteLink</code>, <code>flowEnd</code>, <code>flowChoice</code>; <code>flowBranch</code> (the diamonds) and <code>flowBranchOnPath</code>; <code>flowPanel</code>; <code>flowTab</code> (with <code>selected</code>); <code>flowTabHeading</code> (the "Routes" heading), <code>flowTabDivider</code> (the line and heading over the after stories' tabs). A box can add its own part: <code>look: 'myPart'</code> in flow.ts.</li>
-<li><b>Lines, sizes, wording</b>: <code>src/content/config/flowchart.ts</code>. Boxes sit in the middle of their branches; several lines leaving or entering one box use their own points along its edge, so they never run on top of each other.</li>
-<li><b>The window itself</b>: <code>src/content/windows/flowchart</code>. It only draws: <code>useFlowchart()</code> (from <code>@/core/routes/useFlowchart</code>) gives the boxes, lines, tabs, selection and <code>load()</code>.</li>
+<li><b>Lines, sizes, wording</b>: <code>src/content/config/flowchart.ts</code>. Boxes sit in the middle of their branches, and a box where ways join again goes back under the box where they split, so a long chart stays centered instead of drifting to one side. Several lines leaving or entering one box use their own points along its edge, so they never run on top of each other. When several lines come into one box, the ones coming from far off to a side go on past its top and enter that side. A diamond's lines leave from its side corners when they go off to a side; when two corner lines in one row would overlap, the later one turns down early and enters its box from the side. Where a line runs across another, it hops over it with a small arc (<code>hops</code>), so a crossing never looks like a join.</li>
+<li><b>The window itself</b>: <code>src/content/windows/flowchart</code>. It only draws: <code>useFlowchart()</code> (from <code>@/core/routes/useFlowchart</code>) gives the boxes, lines, tabs, selection and <code>load()</code>. One file per part: <code>index.tsx</code> (the window and its layout), <code>Boxes.tsx</code> (boxes and diamonds), <code>Lines.tsx</code> + <code>linePath.ts</code> (lines, their shapes and hops), <code>ChapterLines.tsx</code>, <code>SidePanel.tsx</code>, <code>RouteTabs.tsx</code>, <code>DebugGrid.tsx</code>.</li>
 </ul>
 <pre><code>export default defineFlowchart({
   node: { width: 168, height: 52, gapX: 36, gapY: 44, image: 'left' }, // box picture: 'left' | 'right' | 'top' | 'bottom' | 'none'
   shape: 'rounded',         // right angles with round corners | 'elbow' | 'curve' | 'straight'
   corner: 10,               // corner radius of 'rounded' lines, px
+  hops: 5,                  // a small arc where a line runs across another, radius px ('rounded' / 'elbow'; null = off)
   branch: { size: 26, side: 'right' }, // flag()/check() diamonds; null = none
   arrows: false,            // true = a small arrow where a line meets the box below
   chapters: { header: 30, size: 12, color: gold, line: { color: '…', width: 1, dash: [6, 4] } }, // null = none
@@ -208,6 +209,7 @@ await event('x/m', 'm')              // the branches join</code></pre>
         straight: true,        // this one goes straight through the diamond; "no" leaves from the side
         bend: -8,              // move the part that runs across up (-) / down (+), px
         start: -20, end: 10,   // where it leaves / enters: px from the box's middle
+        enter: 'left',         // into the box's 'top', or past the top into its 'left' / 'right' side
         look: { color: '#ff8a80', dash: [2, 4] },  // its own colour / width / dashes
       },
       leaving: { via: [[300, 620]] },  // go through these chart points (px, see debug) instead

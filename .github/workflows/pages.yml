@@ -1,0 +1,63 @@
+# Publishes the GitHub Pages site. Runs only by hand: GitHub -> Actions -> Pages -> "Run workflow"
+# (pick the branch), so pushes never rebuild the site by themselves.
+#   /VNRPGEngine/        the Engine Guide (docs/)
+#   /VNRPGEngine/demo/   the web build of the game (pnpm build:web -> build/web)
+# The web build uses relative paths (vite.config.ts base: './'), so it runs from any folder.
+# Repository settings -> Pages -> Source must be "GitHub Actions".
+name: Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push replaces one still waiting.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true # art and sound files are stored with Git LFS
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the web version
+        run: pnpm build:web
+
+      - name: Put the guide at the root and the game in demo/
+        run: |
+          mkdir -p _site
+          cp -r docs/. _site/
+          cp -r build/web _site/demo
+          touch _site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

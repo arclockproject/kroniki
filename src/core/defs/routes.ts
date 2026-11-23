@@ -224,6 +224,11 @@ export interface FlowLineConfig {
   /** Where it leaves / enters: px from the middle of the box (- left, + right). */
   start?: number
   end?: number
+  /**
+   * Which edge of the box it goes into: 'top', or past the top and into the 'left' / 'right' side.
+   * Unset = automatic (a box with several lines coming in takes the ones from far off at its sides).
+   */
+  enter?: 'top' | 'left' | 'right'
   /** Don't draw it. */
   hide?: boolean
   /** Text on the line (shown once the box it leads to is reached); null = none, even for a choice. */

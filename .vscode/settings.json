@@ -1,11 +1,8 @@
 {
   "files.exclude": {
     "node_modules/": true,
-    "src/generated/": true,
     "**/*.gen.ts": true,
     "**/*.gen.png": true,
-    "**/*.test.ts": true,
-    "**/*.test.tsx": true
   },
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,

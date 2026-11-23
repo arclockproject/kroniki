@@ -276,9 +276,9 @@ describe('layout fixes from flow.ts', () => {
     const off = layoutGraph(await fan(), sizes, new Set(), opts)
     const on = layoutGraph(await fan(), sizes, new Set(), { ...opts, autoFix: true })
     expect(off.lines.every((x) => !x.bends)).toBe(true)
-    // Runs into h that overlap left to right never share a height.
+    // Runs out of the choice that overlap left to right never share a height.
     const runs = on.lines
-      .filter((x) => x.to === 'h')
+      .filter((x) => x.from.startsWith('?'))
       .map((x) => {
         const [a, b] = x.points as [[number, number], [number, number]]
         return { lo: Math.min(a[0], b[0]), hi: Math.max(a[0], b[0]), y: x.bends?.[0] }

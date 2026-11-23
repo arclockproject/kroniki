@@ -69,7 +69,7 @@ export interface Screen {
   touch: boolean
 }
 
-/** The sizes every check runs at. Phones are landscape only (see CLAUDE.memory.md). */
+/** The sizes every check runs at. Phones are landscape only (see dev-notes/MEMORY.md). */
 export const SCREENS: Screen[] = [
   { name: 'desktop', width: 1280, height: 720, touch: false },
   { name: 'phone', width: 844, height: 390, touch: true },

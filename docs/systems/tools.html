@@ -117,6 +117,7 @@ pnpm build:android        # Android debug APK (needs JDK 21 + Android SDK)
 pnpm build:android-bundle # Android Play Store bundle (.aab), signed with android/keystore.properties
 pnpm build:android --lite # any build + --lite: smaller pictures and sounds for weaker devices (files end in -lite)
 pnpm vn:extension         # build/vn-extension/*.vsix</code></pre>
+<p>The web build uses relative paths, so <code>build/web</code> runs from any folder of any web server. <code>.github/workflows/pages.yml</code> publishes it to GitHub Pages when you run it by hand (GitHub -&gt; Actions -&gt; Pages -&gt; Run workflow; pushing never rebuilds the site): this guide (<code>docs/</code>) at the site's root and the game in <code>demo/</code> (<a href="https://arclockproject.github.io/VNRPGEngine/demo/">the live demo</a>). It needs Settings -&gt; Pages -&gt; Source set to "GitHub Actions". For your own game, keep it, change the folder, or delete the file.</p>
 <h3 id="electron">The desktop app</h3>
 <ul>
   <li>Loads the built game through its own <code>app://game/</code> address (so sound and files work like on the web).</li>

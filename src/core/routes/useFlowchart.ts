@@ -76,6 +76,8 @@ export interface FlowLine {
   points: [number, number][]
   /** Leaves from a diamond's side corner: across first, then down. */
   side?: boolean
+  /** Ends on its box's side: down past the top, then across into it. */
+  sideEnd?: boolean
   onPath: boolean
   /** Leads to a box not reached yet. */
   locked: boolean

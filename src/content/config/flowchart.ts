@@ -9,6 +9,8 @@ export default defineFlowchart({
   node: { width: 168, height: 52, gapX: 36, gapY: 44, image: 'left' }, // picture: 'left' | 'right' | 'top' | 'bottom' | 'none'
   shape: 'rounded',
   corner: 10,
+  // Where a line runs across another, it hops over it with a small arc (radius px; null = off).
+  hops: 5,
   // flag() / check() splits: a diamond; "yes" goes off to this side, "no" goes straight on.
   branch: { size: 26, side: 'right' },
   arrows: false,

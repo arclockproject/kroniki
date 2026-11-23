@@ -38,6 +38,11 @@ export interface FlowchartConfig {
   /** Corner radius for 'rounded' lines, px. */
   corner: number
   /**
+   * Where a line runs across another, it hops over it with a small arc of this radius, px, so a
+   * crossing never looks like a join ('rounded' and 'elbow' lines). null or 0 = no hops. Default 5.
+   */
+  hops?: number | null
+  /**
    * flag() / check() in a route drawn as a diamond (not a choice: the way depends on a flag or an
    * earlier choice). The "no" way runs straight down through it; the "yes" way leaves from its
    * `side` and turns down into its own box. `size` in px. null = no diamonds (lines split at the box).
