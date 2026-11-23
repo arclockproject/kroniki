@@ -2,13 +2,26 @@
 
 A game engine for **visual novels and story-driven RPGs**, built with React and PixiJS. Write scenes as plain text, draw maps in Tiled, and ship one game to desktop (Windows, Linux), Android and the browser, with keyboard, gamepad and touch support.
 
-**[Read the guide](https://arclockproject.github.io/kroniki/)** (also in [`docs/`](docs/index.html) as plain HTML pages) | **[Get started](https://arclockproject.github.io/kroniki/#setup)** | **[Play the live demo](https://arclockproject.github.io/kroniki/demo/)**
+> **Status: early development.** The engine works and the demo shows what it can do, but APIs, content folders and save formats may still change between versions. Great for trying it out and for small projects, but expect some updates to your game when you upgrade.
+
+| [**Play the demo**](https://arclockproject.github.io/kroniki/demo/) | [**Read the guide**](https://arclockproject.github.io/kroniki/) |
+| --- | --- |
+| See what a game made with Kroniki Engine looks and feels like, right in your browser. No install needed. | Everything about making a game: first steps, step by step recipes and a page for every part of the engine. |
+
+New here? Start with the guide's **[First steps](https://arclockproject.github.io/kroniki/#setup)**, then follow a **[recipe](https://arclockproject.github.io/kroniki/recipes.html)** to add your first NPC, map or shop.
 
 ---
 
-## Live demo
+## The guide
 
-Play the demo game in your browser: **[arclockproject.github.io/kroniki/demo/](https://arclockproject.github.io/kroniki/demo/)**. It is the web build of this repository, published together with the guide by [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which is run by hand from the Actions tab.
+The **[Kroniki Engine guide](https://arclockproject.github.io/kroniki/)** is the place to learn the engine. Every page has examples you can copy. It also ships in [`docs/`](docs/index.html), so you can read it offline in any browser.
+
+- **Start:** [first steps](https://arclockproject.github.io/kroniki/#setup), [recipes](https://arclockproject.github.io/kroniki/recipes.html) (a talking NPC, a new map, a shop, a quest, a battle area...)
+- **World:** [maps](https://arclockproject.github.io/kroniki/world/maps.html), [characters](https://arclockproject.github.io/kroniki/world/characters.html), [art](https://arclockproject.github.io/kroniki/world/art.html)
+- **Story:** [writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html), [`.vn` scripts](https://arclockproject.github.io/kroniki/story/vn.html), [routes and flowchart](https://arclockproject.github.io/kroniki/story/routes.html)
+- **Gameplay:** [items](https://arclockproject.github.io/kroniki/gameplay/items.html), [quests](https://arclockproject.github.io/kroniki/gameplay/progress.html), [battles](https://arclockproject.github.io/kroniki/gameplay/battles.html), [extras](https://arclockproject.github.io/kroniki/gameplay/extras.html)
+- **Interface:** [screens](https://arclockproject.github.io/kroniki/interface/screens.html), [input](https://arclockproject.github.io/kroniki/interface/input.html), [look](https://arclockproject.github.io/kroniki/interface/look.html), [translations](https://arclockproject.github.io/kroniki/interface/translations.html)
+- **Systems:** [audio](https://arclockproject.github.io/kroniki/systems/audio.html), [saves](https://arclockproject.github.io/kroniki/systems/saves.html), [variants](https://arclockproject.github.io/kroniki/systems/variants.html), [tools and building](https://arclockproject.github.io/kroniki/systems/tools.html)
 
 ## What it does
 
@@ -32,6 +45,8 @@ Play the demo game in your browser: **[arclockproject.github.io/kroniki/demo/](h
 - One save system: slots, autosave, quick save, saves in the middle of a scene, export and import, and save upgrades between versions.
 - Translations, content variants (one project, several builds), an audio manager with preloading, and encrypted media in builds.
 - Works fully offline. Every script, font and picture ships with the game.
+
+Want to see it in action first? **[Play the demo](https://arclockproject.github.io/kroniki/demo/)**.
 
 ## How you make a game
 
@@ -81,6 +96,8 @@ If you do use `.vn`, the **Kroniki VN Scripts** editor extension for VSCodium / 
 
 Build it with `pnpm vn:extension`, then install `build/vn-extension/*.vsix` with "Install from VSIX..." in the editor's Extensions view. More in the guide: [Dialogue scripts (.vn)](https://arclockproject.github.io/kroniki/story/vn.html#extension).
 
+**Next:** the guide's [Writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html) walks you through your first scene.
+
 ## Quick start
 
 You need Node.js 24, pnpm (`corepack enable pnpm`) and [Git LFS](https://git-lfs.com). The demo's art and sound files are stored with Git LFS, and the game doesn't build without them.
@@ -99,7 +116,7 @@ pnpm setup:lfs
 tools/git-lfs/git-lfs pull
 ```
 
-Then give the game its name and ids in `src/content/config/app.ts`. The guide's [First steps](https://arclockproject.github.io/kroniki/#setup) explains each field.
+Then give the game its name and ids in `src/content/config/app.ts`, and carry on with the guide's **[First steps](https://arclockproject.github.io/kroniki/#setup)**: it explains each field and what to do next.
 
 ## Commands
 
@@ -115,6 +132,8 @@ Then give the game its name and ids in `src/content/config/app.ts`. The guide's 
 | `pnpm lang` | Translation status (`--write` adds missing keys) |
 | `pnpm vn:extension` | Builds the `.vn` editor extension |
 | `pnpm guide` | Refreshes the guide's search index |
+
+The hosted guide and demo are published by [`.github/workflows/pages.yml`](.github/workflows/pages.yml), run by hand from the Actions tab.
 
 ## Project layout
 
@@ -134,17 +153,6 @@ android/        Android project
 ## Tech stack
 
 React, Material UI, PixiJS 8, zustand with immer, Vite, TypeScript, Electron, Capacitor, Vitest and Biome. Optional: Tiled maps, Aseprite portraits and sprites, and Spine animations.
-
-## Documentation
-
-The [Kroniki Engine guide](https://arclockproject.github.io/kroniki/) covers everything, with examples:
-
-- [Recipes](https://arclockproject.github.io/kroniki/recipes.html): step by step guides for a talking NPC, a new map, a shop, a quest, a battle area...
-- **World:** [maps](https://arclockproject.github.io/kroniki/world/maps.html), [characters](https://arclockproject.github.io/kroniki/world/characters.html), [art](https://arclockproject.github.io/kroniki/world/art.html)
-- **Story:** [writing a scene](https://arclockproject.github.io/kroniki/story/events/scripts.html), [`.vn` scripts](https://arclockproject.github.io/kroniki/story/vn.html), [routes and flowchart](https://arclockproject.github.io/kroniki/story/routes.html)
-- **Gameplay:** [items](https://arclockproject.github.io/kroniki/gameplay/items.html), [quests](https://arclockproject.github.io/kroniki/gameplay/progress.html), [battles](https://arclockproject.github.io/kroniki/gameplay/battles.html), [extras](https://arclockproject.github.io/kroniki/gameplay/extras.html)
-- **Interface:** [screens](https://arclockproject.github.io/kroniki/interface/screens.html), [input](https://arclockproject.github.io/kroniki/interface/input.html), [look](https://arclockproject.github.io/kroniki/interface/look.html), [translations](https://arclockproject.github.io/kroniki/interface/translations.html)
-- **Systems:** [audio](https://arclockproject.github.io/kroniki/systems/audio.html), [saves](https://arclockproject.github.io/kroniki/systems/saves.html), [variants](https://arclockproject.github.io/kroniki/systems/variants.html), [tools and building](https://arclockproject.github.io/kroniki/systems/tools.html)
 
 ## About the name
 
